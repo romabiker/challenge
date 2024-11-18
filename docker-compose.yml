@@ -52,6 +52,7 @@ services:
       - db
       - redis
       - app
+      - clickhouse
     ports: []
 
   celery_beat:
@@ -61,6 +62,7 @@ services:
       - db
       - redis
       - app
+      - clickhouse
     command: ['celery', '-A', 'core', 'beat', '-l', 'INFO']
     ports: []
 

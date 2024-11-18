@@ -1,4 +1,3 @@
-import re
 from collections.abc import Generator
 from contextlib import contextmanager
 from typing import Any
@@ -7,9 +6,6 @@ import clickhouse_connect
 import structlog
 from clickhouse_connect.driver.exceptions import DatabaseError
 from django.conf import settings
-from django.utils import timezone
-
-from core.base_model import Model
 
 logger = structlog.get_logger(__name__)
 

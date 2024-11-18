@@ -21,8 +21,8 @@ class EventLogCreated(Model):
 
 class CreateEventLogRequest(UseCaseRequest):
     event: Model
-    
-    
+
+
 class CreateEventLogData(UseCaseRequest):
     event_type: str
     event_date_time: datetime
@@ -36,13 +36,13 @@ class CreateEventLogResponse(UseCaseResponse):
 
 
 class CreateEventLog(UseCase):
-    
+
     def _execute(self, request: CreateEventLogRequest) -> CreateEventLogResponse:
         logger.info('creating a new eventlog')
         event_log_data = self._convert_data(request.event)
         event_log = EventLog.objects.create(**event_log_data.model_dump())
         return CreateEventLogResponse(result=event_log)
-    
+
     def _convert_data(self, event: Model) -> CreateEventLogData:
         return CreateEventLogData(
             event_type=self._to_snake_case(event.__class__.__name__),

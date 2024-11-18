@@ -4,7 +4,6 @@ import structlog
 from django.db import transaction
 
 from core.base_model import Model
-from core.event_log_client import EventLogClient
 from core.use_case import UseCase, UseCaseRequest, UseCaseResponse
 from events.use_cases.create_events_log import CreateEventLog, CreateEventLogRequest
 from users.models import User
@@ -36,7 +35,7 @@ class CreateUser(UseCase):
             'first_name': request.first_name,
             'last_name': request.last_name,
         }
-    
+
     @transaction.atomic()
     def _execute(self, request: CreateUserRequest) -> CreateUserResponse:
         logger.info('creating a new user')
@@ -56,7 +55,7 @@ class CreateUser(UseCase):
 
         logger.error('unable to create a new user')
         return CreateUserResponse(error='User with this email already exists')
-    
+
     def _make_event(self, user: User) -> UserCreated:
         return UserCreated(
             email=user.email,

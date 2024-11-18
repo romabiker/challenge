@@ -23,6 +23,7 @@ class Migration(migrations.Migration):
                 ('environment', models.CharField(max_length=128)),
                 ('event_context', models.JSONField()),
                 ('metadata_version', models.IntegerField(default=1)),
+                ('is_pushed_to_clickhouse', models.BooleanField(default=False)),
             ],
             options={
                 'abstract': False,
