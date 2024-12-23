@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  app:
+  app: &backend
     build: .
     restart: always
     depends_on:
@@ -43,6 +43,28 @@ services:
       - 8123:8123
     volumes:
       - ./docker/clickhouse/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  celery:
+    <<: *backend
+    container_name: celeryworker
+    command: ['celery', '-A', 'core', 'worker', '-l', 'INFO']
+    depends_on:
+      - db
+      - redis
+      - app
+      - clickhouse
+    ports: []
+
+  celery_beat:
+    <<: *backend
+    container_name: celerybeat
+    depends_on:
+      - db
+      - redis
+      - app
+      - clickhouse
+    command: ['celery', '-A', 'core', 'beat', '-l', 'INFO']
+    ports: []
 
 
 volumes:
